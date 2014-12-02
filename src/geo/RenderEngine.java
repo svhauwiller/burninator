@@ -6,6 +6,8 @@
 
 package geo;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
@@ -23,6 +25,8 @@ import static org.lwjgl.opengl.GL11.glScaled;
 import static org.lwjgl.opengl.GL11.glTranslated;
 import static org.lwjgl.opengl.GL11.glVertex3d;
 import static org.lwjgl.util.glu.GLU.gluPerspective;
+//import org.newdawn.slick.opengl.Texture;
+//import org.newdawn.slick.opengl.TextureLoader;
 
 /**
  *
@@ -41,9 +45,11 @@ public class RenderEngine {
     private double rotAngleY = 0;
     
     private ArrayList<Model3D> models;
+    private ArrayList<String> textureFilepaths;
     
     public RenderEngine(){
         models = new ArrayList<>();
+        textureFilepaths = new ArrayList<>();
     }
     
     public void initView(){
@@ -51,6 +57,23 @@ public class RenderEngine {
         glLoadIdentity();
         gluPerspective(FIELD_OF_VIEW, ASPECT_RATIO, NEAR_CLIP, FAR_CLIP);
         glMatrixMode(GL_MODELVIEW);
+        
+//        for(String filepath : textureFilepaths){
+//            Texture texture;
+//            try {
+//                texture = TextureLoader.getTexture("PNG", new FileInputStream(filepath));
+//
+//                System.out.println("Texture loaded: "+texture);
+//                System.out.println(">> Image width: "+texture.getImageWidth());
+//                System.out.println(">> Image height: "+texture.getImageWidth());
+//                System.out.println(">> Texture width: "+texture.getTextureWidth());
+//                System.out.println(">> Texture height: "+texture.getTextureHeight());
+//                System.out.println(">> Texture ID: "+texture.getTextureID());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
     }
     
     public void addModel(Model3D model){

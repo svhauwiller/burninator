@@ -32,14 +32,16 @@ public class Window {
         Display.setDisplayMode(new DisplayMode(width,height));
         Display.create();
         
-        Model3D character = new Model3D();
-        character.generateDefault();
-        
         this.renderer = new RenderEngine();
         this.renderer.initView();
-        this.renderer.addModel(character);
-        
-        this.input = new Controller(character);
+    }
+    
+    public void addModel(Model3D model, String textureFilepath){
+        renderer.addModel(model);
+    }
+    
+    public void initPlayerController(Model3D playerModel) throws LWJGLException{
+        input = new Controller(playerModel);
     }
     
     public void display(){
