@@ -27,32 +27,30 @@ public class Controller {
     }
     
     public void update(){
+        
+        //DOWN PIVOT
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            System.out.println("DOWN");
-            
-            double deltaX = (Math.cos(Math.toRadians(character.getModelRotY())));
-            double deltaZ = (Math.sin(Math.toRadians(character.getModelRotY())));
-            character.setModelRotX(character.getModelRotX() - deltaX);
-            character.setModelRotZ(character.getModelRotZ() + deltaZ);
+            double newRotX = character.getModelRotX() - 1.0;
+            newRotX %= 360;
+            character.setModelRotX(newRotX);
         }
         
+        //UP PIVOT
         if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            System.out.println("UP");
-            double deltaX = (Math.cos(Math.toRadians(character.getModelRotY())));
-            double deltaZ = (Math.sin(Math.toRadians(character.getModelRotY())));
-            character.setModelRotX(character.getModelRotX() + deltaX);
-            character.setModelRotZ(character.getModelRotZ() - deltaZ);
+            double newRotX = character.getModelRotX() + 1.0;
+            newRotX %= 360;
+            character.setModelRotX(newRotX);
         }
         
+        //LEFT PIVOT
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            System.out.println("LEFT");
             double newRotY = character.getModelRotY() + 1.0;
             newRotY %= 360;
             character.setModelRotY(newRotY);
         }
         
+        //RIGHT PIVOT
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            System.out.println("RIGHT");
             double newRotY = character.getModelRotY() - 1.0;
             newRotY %= 360;
             character.setModelRotY(newRotY);

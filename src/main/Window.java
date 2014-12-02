@@ -33,6 +33,7 @@ public class Window {
         Display.create();
         
         Model3D character = new Model3D();
+        character.generateDefault();
         
         this.renderer = new RenderEngine();
         this.renderer.initView();

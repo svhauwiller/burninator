@@ -43,6 +43,9 @@ public class Model3D {
         modelScaleZ = 1.0;
         
         clearAllData();
+    }
+    
+    public void generateDefault(){
         Point3D vertex1 = new Point3D(1.0, 1.0, 0.0);
         vertices.add(vertex1);
         Point3D vertex2 = new Point3D(1.0, -1.0, 0.0);
@@ -64,7 +67,8 @@ public class Model3D {
         clearAllData();
         try{
             List<String> fileData = Files.readAllLines(Paths.get(filename), Charset.defaultCharset());
-            fileData.stream().forEach((line) -> {
+            
+            for(String line : fileData){
                 
                 if(line.startsWith("v ")){
                     parseVertex(line);
@@ -75,7 +79,7 @@ public class Model3D {
                 } else if (line.startsWith("f ")){
                     parsePolygon(line);
                 }
-            });
+            }
         } catch(IOException ex) {
             System.out.println(ex.toString());
         }

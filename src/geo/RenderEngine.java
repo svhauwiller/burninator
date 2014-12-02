@@ -83,8 +83,8 @@ public class RenderEngine {
             ArrayList<Poly3D> faces = model.getFaces();
             
             glTranslated(model.getModelX(), model.getModelY(), model.getModelZ());
-            glRotated(model.getModelRotX(), 1.0, 0.0, 0.0);
             glRotated(model.getModelRotY(), 0.0, 1.0, 0.0);
+            glRotated(model.getModelRotX(), 1.0, 0.0, 0.0);
             glRotated(model.getModelRotZ(), 0.0, 0.0, 1.0);
             glScaled(model.getModelScaleX(), model.getModelScaleY(), model.getModelScaleZ());
 
