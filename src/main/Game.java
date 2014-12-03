@@ -18,7 +18,7 @@ public class Game {
     private final int WINDOW_HEIGHT = 720;
     
     private final String PLAYER_MODEL_FILE = "car.obj";
-    private final String PLAYER_TEXTURE_FILE = "car_j.obj";
+    private final String PLAYER_TEXTURE_FILE = "car_j.jpg";
     
     private Window mainWindow;
     

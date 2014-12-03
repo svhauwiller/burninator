@@ -31,13 +31,14 @@ public class Window {
     public void init() throws LWJGLException{
         Display.setDisplayMode(new DisplayMode(width,height));
         Display.create();
+        Display.setVSyncEnabled(true);
         
         this.renderer = new RenderEngine();
         this.renderer.initView();
     }
     
     public void addModel(Model3D model, String textureFilepath){
-        renderer.addModel(model);
+        renderer.addModel(model, textureFilepath);
     }
     
     public void initPlayerController(Model3D playerModel) throws LWJGLException{
@@ -45,6 +46,8 @@ public class Window {
     }
     
     public void display(){
+        renderer.loadTextures();
+        
         while(!Display.isCloseRequested()){
             input.update();
             renderer.run();
