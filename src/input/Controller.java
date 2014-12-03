@@ -29,14 +29,14 @@ public class Controller {
     public void update(){
         
         //DOWN PIVOT
-        if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+        if(Keyboard.isKeyDown(Keyboard.KEY_W) && character.getModelRotX() > -90){
             double newRotX = character.getModelRotX() - 1.0;
             newRotX %= 360;
             character.setModelRotX(newRotX);
         }
         
         //UP PIVOT
-        if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+        if(Keyboard.isKeyDown(Keyboard.KEY_S) && character.getModelRotX() < 90){
             double newRotX = character.getModelRotX() + 1.0;
             newRotX %= 360;
             character.setModelRotX(newRotX);
@@ -55,5 +55,17 @@ public class Controller {
             newRotY %= 360;
             character.setModelRotY(newRotY);
         }
+        
+        movePlayerForward();
+    }
+    
+    private void movePlayerForward(){
+        double oldModelX = character.getModelX();
+        double oldModelY = character.getModelY();
+        double oldModelZ = character.getModelZ();
+        
+        character.setModelX(oldModelX - Math.sin(Math.toRadians(character.getModelRotY())) * 0.05);
+        character.setModelY(oldModelY + Math.sin(Math.toRadians(character.getModelRotX())) * 0.05);
+        character.setModelZ(oldModelZ - Math.cos(Math.toRadians(character.getModelRotY())) * 0.05);
     }
 }
