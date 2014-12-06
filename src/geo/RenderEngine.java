@@ -48,8 +48,8 @@ public class RenderEngine {
     private final float FAR_CLIP = (float) 1000.0;
     
     private double cameraX = 0;
-    private double cameraY = 0;
-    private double cameraZ = -2;
+    private double cameraY = 3;
+    private double cameraZ = 2;
     private double rotAngleX = 0;
     private double rotAngleY = 0;
     
@@ -115,7 +115,7 @@ public class RenderEngine {
             glLoadIdentity();
             glRotated(rotAngleX, 1.0, 0.0, 0.0);
             glRotated(rotAngleY, 0.0, 1.0, 0.0);
-            glTranslated(cameraX, cameraY, cameraZ);
+            glTranslated(-1*cameraX, -1*cameraY, -1*cameraZ);
             
             //APPLY LOCAL TRANSFORMATIONS
             Model3D model = models.get(i);

@@ -42,7 +42,7 @@ public class Window {
     }
     
     public void initPlayerController(Model3D playerModel) throws LWJGLException{
-        input = new Controller(playerModel);
+        input = new Controller(playerModel, this.renderer);
     }
     
     public void display(){

@@ -6,11 +6,30 @@
 
 package input;
 
+import static org.lwjgl.opengl.GL11.GL_POLYGON;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glRotated;
+import static org.lwjgl.opengl.GL11.glScaled;
+import static org.lwjgl.opengl.GL11.glTexCoord2d;
+import static org.lwjgl.opengl.GL11.glTranslated;
+import static org.lwjgl.opengl.GL11.glVertex3d;
+
+import java.util.ArrayList;
+
 import geo.Model3D;
+import geo.Point2D;
+import geo.Point3D;
+import geo.Poly3D;
 import geo.RenderEngine;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Matrix3f;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 /**
  *
@@ -20,8 +39,9 @@ public class Controller {
     private Model3D character;
     private RenderEngine renderer;
     
-    public Controller(Model3D character) throws LWJGLException{
+    public Controller(Model3D character, RenderEngine renderer) throws LWJGLException{
         this.character = character;
+        this.renderer = renderer;
         
         Keyboard.create();
     }
@@ -33,6 +53,7 @@ public class Controller {
             double newRotX = character.getModelRotX() - 1.0;
             newRotX %= 360;
             character.setModelRotX(newRotX);
+            renderer.setRotAngleX(-1*newRotX);
         }
         
         //UP PIVOT
@@ -40,6 +61,7 @@ public class Controller {
             double newRotX = character.getModelRotX() + 1.0;
             newRotX %= 360;
             character.setModelRotX(newRotX);
+            renderer.setRotAngleX(-1*newRotX);
         }
         
         //LEFT PIVOT
@@ -47,6 +69,7 @@ public class Controller {
             double newRotY = character.getModelRotY() + 1.0;
             newRotY %= 360;
             character.setModelRotY(newRotY);
+            renderer.setRotAngleY(-1*newRotY);
         }
         
         //RIGHT PIVOT
@@ -54,6 +77,7 @@ public class Controller {
             double newRotY = character.getModelRotY() - 1.0;
             newRotY %= 360;
             character.setModelRotY(newRotY);
+            renderer.setRotAngleY(-1*newRotY);
         }
         
         movePlayerForward();
@@ -64,8 +88,24 @@ public class Controller {
         double oldModelY = character.getModelY();
         double oldModelZ = character.getModelZ();
         
-        character.setModelX(oldModelX - Math.sin(Math.toRadians(character.getModelRotY())) * 0.05);
-        character.setModelY(oldModelY + Math.sin(Math.toRadians(character.getModelRotX())) * 0.05);
-        character.setModelZ(oldModelZ - Math.cos(Math.toRadians(character.getModelRotY())) * 0.05);
+        character.setModelX(oldModelX - Math.sin(Math.toRadians(character.getModelRotY())) * 0.2);
+        character.setModelY(oldModelY + Math.sin(Math.toRadians(character.getModelRotX())) * 0.2);
+        character.setModelZ(oldModelZ - Math.cos(Math.toRadians(character.getModelRotY())) * 0.2);
+
+        renderer.setCameraX(character.getModelX() + (4 * Math.sin(Math.toRadians(character.getModelRotY()))));
+        renderer.setCameraZ(character.getModelZ() + (4 * Math.cos(Math.toRadians(character.getModelRotY()))));
+        
+        double oldCamX = renderer.getCameraX();
+        double oldCamY = renderer.getCameraY();
+        double oldCamZ = renderer.getCameraZ();
+        
+        renderer.setCameraY(character.getModelY() - (4 * Math.sin(Math.toRadians(character.getModelRotX()))));
+        
+        double distance = 4 * Math.cos(Math.toRadians(character.getModelRotX()));
+        double delta = 4 - distance;
+        
+        renderer.setCameraZ(oldCamZ - (delta * Math.cos(Math.toRadians(character.getModelRotY()))));
+        renderer.setCameraX(oldCamX - (delta * Math.sin(Math.toRadians(character.getModelRotY()))));
+        
     }
 }

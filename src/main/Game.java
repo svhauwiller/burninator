@@ -20,6 +20,9 @@ public class Game {
     private final String PLAYER_MODEL_FILE = "car.obj";
     private final String PLAYER_TEXTURE_FILE = "car_j.jpg";
     
+    private final String LOT_MODEL_FILE = "ParkingLot.obj";
+    private final String LOT_TEXTURE_FILE = "ParkingLot.bmp";
+    
     private Window mainWindow;
     
     public Game(){
@@ -30,6 +33,10 @@ public class Game {
         Model3D playerModel = new Model3D();
         playerModel.loadDataFromFile(PLAYER_MODEL_FILE);
         mainWindow.addModel(playerModel, PLAYER_TEXTURE_FILE);
+        
+        Model3D lotModel = new Model3D();
+        lotModel.loadDataFromFile(LOT_MODEL_FILE);
+        mainWindow.addModel(lotModel, LOT_TEXTURE_FILE);
         mainWindow.initPlayerController(playerModel);
     }
     
