@@ -13,6 +13,7 @@ import static math.LinearAlgebra.matrixMult;
 import static math.LinearAlgebra.matrixVectMult;
 import static math.LinearAlgebra.rotXAxisMat;
 import static math.LinearAlgebra.rotYAxisMat;
+import static math.LinearAlgebra.scaleMat;
 import static math.LinearAlgebra.transMat;
 
 /**
@@ -52,11 +53,33 @@ public class Collider {
                     
                     double[] homPt = new double[]{x, y, z, 1}; 
                     double[] transformedPt = matrixVectMult(finalTransformMat, homPt, 4);
-                    if(Math.abs(transformedPt[0]) < width/2 ||
-                       Math.abs(transformedPt[1]) < height/2 ||
-                       Math.abs(transformedPt[2]) < depth/2){
+                    
+                    if(Math.abs(transformedPt[0] - offsetX) < width/2 &&
+                       Math.abs(transformedPt[1] - offsetY) < height/2 &&
+                       Math.abs(transformedPt[2] - offsetZ) < depth/2){
                         return true;
                     }
+                    
+//                    if(Math.abs(transformedPt[0] - offsetX) < width/2){
+//                        System.out.println("X");
+//                        System.out.println(transformedPt[0] - offsetX);
+//                        System.out.println(width/2);
+//                    }
+//                    
+//                    if(Math.abs(transformedPt[1] - offsetY) < height/2){
+//                        System.out.println("Y");
+//                        System.out.println(transformedPt[1] - offsetY);
+//                        System.out.println(height/2);
+//                    }
+//                    
+//                    if(Math.abs(transformedPt[2] - offsetZ) < depth/2){
+//                        System.out.println("Z");
+//                        System.out.println(transformedPt[2] - offsetZ);
+//                        System.out.println(depth/2);
+//                    }
+//                    
+//                    }
+                    
                 }
             }
         }
@@ -65,16 +88,20 @@ public class Collider {
     }
     
     private double[][] generateTransformMat(Model3D testParent){
-        //[NegativeHomeRotateY]*[NegativeHomeRotateX]*[NegativeHomeTranslate]*[TestTranslate]*[TestRotateX]*[TestRotateY]
+        //[NegativeHomeScale]*[NegativeHomeRotateY]*[NegativeHomeRotateX]*[NegativeHomeTranslate]*[TestTranslate]*[TestRotateX]*[TestRotateY]*[TestScale]
+        //Scale by test
+        double[][] twoTransformMat = matrixMult(rotXAxisMat(testParent.getModelRotY()), scaleMat(testParent.getModelScaleX(), testParent.getModelScaleY(), testParent.getModelScaleZ()), 4);
         //Rotate by test
-        double[][] twoTransformMat = matrixMult(rotXAxisMat(testParent.getModelRotX()), rotYAxisMat(testParent.getModelRotY()), 4);
+        double[][] threeTransformMat = matrixMult(rotXAxisMat(testParent.getModelRotX()), twoTransformMat, 4);
         //Translate by test
-        double[][] threeTransformMat = matrixMult(transMat(testParent.getModelX(), testParent.getModelY(), testParent.getModelZ()), twoTransformMat, 4);
+        double[][] fourTransformMat = matrixMult(transMat(testParent.getModelX(), testParent.getModelY(), testParent.getModelZ()), threeTransformMat, 4);
         //Translate by negative home
-        double[][] fourTransformMat = matrixMult(transMat(-parentModel.getModelX(), -parentModel.getModelY(), -parentModel.getModelZ()), threeTransformMat, 4);
+        double[][] fiveTransformMat = matrixMult(transMat(-parentModel.getModelX(), -parentModel.getModelY(), -parentModel.getModelZ()), fourTransformMat, 4);
         //Rotate by negative home
-        double[][] fiveTransformMat = matrixMult(rotXAxisMat(-parentModel.getModelRotX()), fourTransformMat, 4);
-        return matrixMult(rotYAxisMat(-parentModel.getModelRotY()), fiveTransformMat, 4);
+        double[][] sixTransformMat = matrixMult(rotXAxisMat(-parentModel.getModelRotX()), fiveTransformMat, 4);
+        double[][] sevenTransformMat = matrixMult(rotYAxisMat(-parentModel.getModelRotY()), sixTransformMat, 4);
+        //Scale by negative home
+        return matrixMult(scaleMat(1/parentModel.getModelScaleX(), 1/parentModel.getModelScaleY(), 1/parentModel.getModelScaleZ()), sevenTransformMat, 4);
     }
     
     public Model3D getParentModel(){

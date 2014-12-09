@@ -69,6 +69,7 @@ public class Game {
 		    	buildingModel.setModelScaleX(.5);
 		    	buildingModel.setModelScaleY(1);
 		    	buildingModel.setModelScaleZ(.5);
+                        buildingModel.createCollider();
 		    	//mainWindow.addModel(buildingModel, BUILDING_TEXTURE_FILE);
 		    	mainWindow.addModel(buildingModel, LOT_TEXTURE_FILE);
 		    	listOfOthers.add(buildingModel);

@@ -48,6 +48,15 @@ public class LinearAlgebra {
         };
     }
     
+    public static double[][] scaleMat(double x, double y, double z){
+        return new double[][]{
+            {x, 0, 0, 0},
+            {0, y, 0, 0},
+            {0, 0, z, 0},
+            {0, 0, 0, 1}
+        };
+    }
+    
     public static double[][] matrixMult(double[][] A, double[][] B, int N){
         double [][] C = new double[N][N];
         for (int i = 0; i < N; i++) {

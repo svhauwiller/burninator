@@ -88,9 +88,9 @@ public class Controller {
         double oldModelY = character.getModelY();
         double oldModelZ = character.getModelZ();
         
-        character.setModelX(oldModelX - Math.sin(Math.toRadians(character.getModelRotY())) * 0.2);
-        character.setModelY(oldModelY + Math.sin(Math.toRadians(character.getModelRotX())) * 0.2);
-        character.setModelZ(oldModelZ - Math.cos(Math.toRadians(character.getModelRotY())) * 0.2);
+        character.setModelX(oldModelX - Math.sin(Math.toRadians(character.getModelRotY())) * 0.05);
+        character.setModelY(oldModelY + Math.sin(Math.toRadians(character.getModelRotX())) * 0.05);
+        character.setModelZ(oldModelZ - Math.cos(Math.toRadians(character.getModelRotY())) * 0.05);
 
         renderer.setCameraX(character.getModelX() + (4 * Math.sin(Math.toRadians(character.getModelRotY()))));
         renderer.setCameraZ(character.getModelZ() + (4 * Math.cos(Math.toRadians(character.getModelRotY()))));

@@ -53,6 +53,8 @@ public class RenderEngine {
     private double rotAngleX = 0;
     private double rotAngleY = 0;
     
+    private int numCol = 0;
+    
     private ArrayList<Model3D> models;
     private ArrayList<String> textureFilepaths;
     private ArrayList<Texture> textures;
@@ -104,45 +106,69 @@ public class RenderEngine {
     
     public void run(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        checkCollisions();
+        redrawAll();
         
-        for(int i = 0; i < models.size(); i++){
-            //BIND TEXTURE TO GL CONTEXT
-            Color.white.bind();
-            Texture modelTexture = textures.get(i);
-            modelTexture.bind();
-            
-            //APPLY GLOBAL TRANSFORMATUIONS (CAMERA)
-            glLoadIdentity();
-            glRotated(rotAngleX, 1.0, 0.0, 0.0);
-            glRotated(rotAngleY, 0.0, 1.0, 0.0);
-            glTranslated(-1*cameraX, -1*cameraY, -1*cameraZ);
-            
-            //APPLY LOCAL TRANSFORMATIONS
-            Model3D model = models.get(i);
-            glTranslated(model.getModelX(), model.getModelY(), model.getModelZ());
-            glRotated(model.getModelRotY(), 0.0, 1.0, 0.0);
-            glRotated(model.getModelRotX(), 1.0, 0.0, 0.0);
-            glRotated(model.getModelRotZ(), 0.0, 0.0, 1.0);
-            glScaled(model.getModelScaleX(), model.getModelScaleY(), model.getModelScaleZ());
-
-            //RENDER EACH FACE OF THE MODEL
-            ArrayList<Poly3D> faces = model.getFaces();
-            for(Poly3D face : faces){
-                ArrayList<Integer> uvCoordIndicies = face.getUvCoordIndicies();
-                ArrayList<Integer> vertexIndicies = face.getVertexIndicies();
-                
-                glBegin(GL_POLYGON);
-                for(int j = 0; j < vertexIndicies.size(); j++){
-                    Point2D uvCoord = model.getUvCoordAt(uvCoordIndicies.get(j));
-                    Point3D vertex = model.getVertexAt(vertexIndicies.get(j));
-                    
-                    glTexCoord2d(uvCoord.getX(), uvCoord.getY());
-                    glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
-                }
-                glEnd();
+    }
+    
+    private void checkCollisions(){
+        Model3D player = models.get(0);
+        for(int i = 1; i < models.size(); i++){
+            if(models.get(i).hasCollision(player)){
+                System.out.println("COLLIDE " + i);
+                numCol++;
             }
         }
     }
+    
+    private void redrawAll(){
+        for(int i = 0; i < models.size(); i++){
+            Model3D model = models.get(i);
+            bindTextures(i);
+            applyTransformations(model);
+            drawPolygons(model);
+        }
+    }
+    
+    private void bindTextures(int modelIndex){
+        Color.white.bind();
+        Texture modelTexture = textures.get(modelIndex);
+        modelTexture.bind();
+    }
+    
+    private void applyTransformations(Model3D model){
+        //APPLY GLOBAL TRANSFORMATUIONS (CAMERA)
+        glLoadIdentity();
+        glRotated(rotAngleX, 1.0, 0.0, 0.0);
+        glRotated(rotAngleY, 0.0, 1.0, 0.0);
+        glTranslated(-1*cameraX, -1*cameraY, -1*cameraZ);
+
+        //APPLY LOCAL TRANSFORMATIONS
+        glTranslated(model.getModelX(), model.getModelY(), model.getModelZ());
+        glRotated(model.getModelRotY(), 0.0, 1.0, 0.0);
+        glRotated(model.getModelRotX(), 1.0, 0.0, 0.0);
+        glRotated(model.getModelRotZ(), 0.0, 0.0, 1.0);
+        glScaled(model.getModelScaleX(), model.getModelScaleY(), model.getModelScaleZ());
+    }
+   
+    private void drawPolygons(Model3D model){
+        ArrayList<Poly3D> faces = model.getFaces();
+        for(Poly3D face : faces){
+            ArrayList<Integer> uvCoordIndicies = face.getUvCoordIndicies();
+            ArrayList<Integer> vertexIndicies = face.getVertexIndicies();
+
+            glBegin(GL_POLYGON);
+            for(int j = 0; j < vertexIndicies.size(); j++){
+                Point2D uvCoord = model.getUvCoordAt(uvCoordIndicies.get(j));
+                Point3D vertex = model.getVertexAt(vertexIndicies.get(j));
+
+                glTexCoord2d(uvCoord.getX(), uvCoord.getY());
+                glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
+            }
+            glEnd();
+        }
+    }
+    
 
     public double getCameraX() {
         return cameraX;
