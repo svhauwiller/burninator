@@ -6,6 +6,9 @@
 
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import geo.Model3D;
 import org.lwjgl.LWJGLException;
 
@@ -23,6 +26,16 @@ public class Game {
     private final String LOT_MODEL_FILE = "ParkingLot.obj";
     private final String LOT_TEXTURE_FILE = "ParkingLot.bmp";
     
+    private final String GROUND_MODEL_FILE = "square.obj";
+    private final String PAVEMENT_TEXTURE_FILE = "pavement.jpg";
+    
+    private final String BUILDING_MODEL_FILE = "building1.obj"; // not UV mapped to mirror_building.jpg yet
+    private final String BUILDING_TEXTURE_FILE = "mirror_building.jpg";
+
+    private int numOfBuildings = 5; // currently we square this number, so there are numOfBuildings x numOfBuildings
+    
+    private List<Model3D> listOfOthers = new ArrayList<Model3D>();
+    
     private Window mainWindow;
     
     public Game(){
@@ -35,16 +48,39 @@ public class Game {
         playerModel.createCollider();
         mainWindow.addModel(playerModel, PLAYER_TEXTURE_FILE);
         
-        Model3D lotModel = new Model3D();
-        lotModel.loadDataFromFile(LOT_MODEL_FILE);
-        mainWindow.addModel(lotModel, LOT_TEXTURE_FILE);
         mainWindow.initPlayerController(playerModel);
+    }
+    
+    private void generateEnv() {
+    	Model3D groundModel = new Model3D();
+    	groundModel.loadDataFromFile(GROUND_MODEL_FILE);
+    	mainWindow.addModel(groundModel, PAVEMENT_TEXTURE_FILE);
+    	listOfOthers.add(groundModel);
+    	
+    	for(int i = 1; i < numOfBuildings + 1; i++)
+    	{
+    		for(int j = 1; j < numOfBuildings + 1; j++)
+    		{
+		    	Model3D buildingModel = new Model3D();
+		    	buildingModel.loadDataFromFile(BUILDING_MODEL_FILE);
+		    	buildingModel.setModelX(20*i);
+		    	buildingModel.setModelY(0); // 50 is the height of building1.obj
+		    	buildingModel.setModelZ(20*j);
+		    	buildingModel.setModelScaleX(.5);
+		    	buildingModel.setModelScaleY(1);
+		    	buildingModel.setModelScaleZ(.5);
+		    	//mainWindow.addModel(buildingModel, BUILDING_TEXTURE_FILE);
+		    	mainWindow.addModel(buildingModel, LOT_TEXTURE_FILE);
+		    	listOfOthers.add(buildingModel);
+    		}
+    	}
     }
     
     public void run(){
         try{
             mainWindow.init();
             initPlayer();
+            generateEnv();
             mainWindow.display();
         } catch (LWJGLException ex) {
             mainWindow.destroy();
