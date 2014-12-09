@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import physics.Collider;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Model3D {
     private ArrayList<Poly3D> faces;
     
     private Model3D parent;
+    private Collider collider;
     
     private double modelX;
     private double modelY;
@@ -35,12 +37,26 @@ public class Model3D {
     private double modelScaleY;
     private double modelScaleZ;
     
+    private double maxX;
+    private double minX;
+    private double maxY;
+    private double minY;
+    private double maxZ;
+    private double minZ;
+    
     public Model3D(){
         parent = null;
         
         modelScaleX = 1.0;
         modelScaleY = 1.0;
         modelScaleZ = 1.0;
+        
+        maxX = Double.NaN;
+        minX = Double.NaN;
+        maxY = Double.NaN;
+        minY = Double.NaN;
+        maxZ = Double.NaN;
+        minZ = Double.NaN;
         
         clearAllData();
     }
@@ -61,7 +77,7 @@ public class Model3D {
         face.addPoint(3);
         faces.add(face);
     }
-    
+        
     public void loadDataFromFile(String filename)
     {
         clearAllData();
@@ -90,6 +106,38 @@ public class Model3D {
         String[] parts = data.split(" ");
         Point3D vertex = new Point3D(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]));
         vertices.add(vertex);
+        evaluateMinMax(vertex);
+    }
+    
+    private void evaluateMinMax(Point3D vertex){
+        
+        if(Double.isNaN(maxX)){
+            maxX = vertex.getX();
+            minX = vertex.getX();
+            maxY = vertex.getY();
+            minY = vertex.getY();
+            maxZ = vertex.getZ();
+            minZ = vertex.getZ();
+        }
+        
+        if(maxX < vertex.getX()){
+            maxX = vertex.getX();
+        } else if (minX > vertex.getX()){
+            minX = vertex.getX();
+        }
+        
+        if(maxY < vertex.getY()){
+            maxY = vertex.getY();
+        } else if (minY > vertex.getY()){
+            minY = vertex.getY();
+        }
+        
+        if(maxZ < vertex.getZ()){
+            maxZ = vertex.getZ();
+        } else if (minZ > vertex.getZ()){
+            minZ = vertex.getZ();
+        }
+        
     }
     
     private void parseUVCoord(String data)
@@ -117,6 +165,32 @@ public class Model3D {
         }
         getFaces().add(face);
     }
+    
+    public void createCollider(){
+        double width = maxX - minX;
+        double height = maxY - minY;
+        double depth = maxZ - minZ;
+        double offsetX = (maxX + minX)/2;
+        double offsetY = (maxY + minY)/2;
+        double offsetZ = (maxZ + minZ)/2;
+        System.out.println("X: " + maxX + ", " + minX + " W: " + width + " O: " + offsetX);
+        System.out.println("Y: " + maxY + ", " + minY + " W: " + height + " O: " + offsetY);
+        System.out.println("Z: " + maxZ + ", " + minZ + " W: " + depth + " O: " + offsetZ);
+        createCollider(width, height, depth, offsetX, offsetY, offsetZ);
+    }
+    
+    public void createCollider(double width, double height, double depth, double offsetX, double offsetY, double offsetZ){
+        collider = new Collider(this, width, height, depth, offsetX, offsetY, offsetZ);
+    }
+    
+    public boolean hasCollision(Model3D testModel){
+        Collider testCollider = testModel.getCollider();
+        if(collider != null && testCollider != null){
+            return collider.hasCollision(testModel.getCollider());
+        } else {
+            return false;
+        }
+    }
 
     public Point3D getVertexAt(int i) {
         return vertices.get(i);
@@ -140,6 +214,10 @@ public class Model3D {
 
     public void setParent(Model3D parent) {
         this.parent = parent;
+    }
+    
+    public Collider getCollider() {
+        return collider;
     }
 
     public double getModelX() {
@@ -221,4 +299,5 @@ public class Model3D {
         vertNorms = new ArrayList<>();
         faces = new ArrayList<>();
     }
+
 }

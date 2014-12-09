@@ -6,6 +6,12 @@
 
 package main;
 
+import static math.LinearAlgebra.matrixMult;
+import static math.LinearAlgebra.matrixVectMult;
+import static math.LinearAlgebra.rotXAxisMat;
+import static math.LinearAlgebra.rotYAxisMat;
+import static math.LinearAlgebra.transMat;
+
 /**
  *
  * @author Wesley

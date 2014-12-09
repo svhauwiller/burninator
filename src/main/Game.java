@@ -32,6 +32,7 @@ public class Game {
     public void initPlayer() throws LWJGLException{
         Model3D playerModel = new Model3D();
         playerModel.loadDataFromFile(PLAYER_MODEL_FILE);
+        playerModel.createCollider();
         mainWindow.addModel(playerModel, PLAYER_TEXTURE_FILE);
         
         Model3D lotModel = new Model3D();
