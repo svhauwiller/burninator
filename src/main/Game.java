@@ -23,13 +23,10 @@ public class Game {
     private final String PLAYER_MODEL_FILE = "car.obj";
     private final String PLAYER_TEXTURE_FILE = "car_j.jpg";
     
-    private final String LOT_MODEL_FILE = "ParkingLot.obj";
-    private final String LOT_TEXTURE_FILE = "ParkingLot.bmp";
-    
     private final String GROUND_MODEL_FILE = "square.obj";
     private final String PAVEMENT_TEXTURE_FILE = "pavement.jpg";
     
-    private final String BUILDING_MODEL_FILE = "building1.obj"; // not UV mapped to mirror_building.jpg yet
+    private final String BUILDING_MODEL_FILE = "building1.obj";
     private final String BUILDING_TEXTURE_FILE = "mirror_building.jpg";
 
     private int numOfBuildings = 5; // currently we square this number, so there are numOfBuildings x numOfBuildings
@@ -70,8 +67,7 @@ public class Game {
 		    	buildingModel.setModelScaleY(1);
 		    	buildingModel.setModelScaleZ(.5);
                         buildingModel.createCollider();
-		    	//mainWindow.addModel(buildingModel, BUILDING_TEXTURE_FILE);
-		    	mainWindow.addModel(buildingModel, LOT_TEXTURE_FILE);
+		    	mainWindow.addModel(buildingModel, BUILDING_TEXTURE_FILE);
 		    	listOfOthers.add(buildingModel);
     		}
     	}
