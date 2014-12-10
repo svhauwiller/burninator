@@ -8,27 +8,50 @@ package geo;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import static org.lwjgl.opengl.GL11.GL_AMBIENT;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_DIFFUSE;
+import static org.lwjgl.opengl.GL11.GL_LIGHT0;
+import static org.lwjgl.opengl.GL11.GL_LIGHT1;
+import static org.lwjgl.opengl.GL11.GL_LIGHT2;
+import static org.lwjgl.opengl.GL11.GL_LIGHT3;
+import static org.lwjgl.opengl.GL11.GL_LIGHT4;
+import static org.lwjgl.opengl.GL11.GL_LIGHT5;
+import static org.lwjgl.opengl.GL11.GL_LIGHT6;
+import static org.lwjgl.opengl.GL11.GL_LIGHT7;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_LIGHT_MODEL_LOCAL_VIEWER;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_POLYGON;
+import static org.lwjgl.opengl.GL11.GL_POSITION;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_SMOOTH;
+import static org.lwjgl.opengl.GL11.GL_SPECULAR;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glBlendFunc;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLight;
+import static org.lwjgl.opengl.GL11.glLightModeli;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glNormal3d;
 import static org.lwjgl.opengl.GL11.glRotated;
 import static org.lwjgl.opengl.GL11.glScaled;
+import static org.lwjgl.opengl.GL11.glShadeModel;
 import static org.lwjgl.opengl.GL11.glTexCoord2d;
 import static org.lwjgl.opengl.GL11.glTranslated;
 import static org.lwjgl.opengl.GL11.glVertex3d;
@@ -65,7 +88,31 @@ public class RenderEngine {
     
     public void initView(){
         glEnable(GL_TEXTURE_2D);
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);  
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f); 
+//        glEnable(GL_LIGHTING);
+//        glShadeModel(GL_SMOOTH);
+//        //glEnable(GL_LIGHT0);
+//        
+//        float[] posVert = {50.0f,60.0f,50.0f,1.0f};
+//        float[] ambColorVert = {1.0f, 1.0f, 1.0f, 1.0f};
+//        float[] difColorVert = {1.0f, 1.0f, 1.0f, 1.0f};
+//        float[] specColorVert = {1.0f, 1.0f, 1.0f, 1.0f};
+//        FloatBuffer position = convertToFB(posVert);
+//        FloatBuffer ambientColor = convertToFB(ambColorVert);
+//        FloatBuffer diffuseColor = convertToFB(difColorVert);
+//        FloatBuffer specularColor = convertToFB(specColorVert);
+//        glLight(GL_LIGHT1, GL_POSITION, position);
+//        glLight(GL_LIGHT1, GL_AMBIENT, ambientColor);
+//        glLight(GL_LIGHT1, GL_DIFFUSE, diffuseColor);
+//        glLight(GL_LIGHT1, GL_SPECULAR, specularColor);
+//        glEnable(GL_LIGHT1);
+//        glEnable(GL_LIGHT2);
+//        glEnable(GL_LIGHT3);
+//        glEnable(GL_LIGHT4);
+//        glEnable(GL_LIGHT5);
+//        glEnable(GL_LIGHT6);
+//        glEnable(GL_LIGHT7);
+//        glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_DEPTH_TEST);
@@ -74,6 +121,15 @@ public class RenderEngine {
         glLoadIdentity();
         gluPerspective(FIELD_OF_VIEW, ASPECT_RATIO, NEAR_CLIP, FAR_CLIP);
         glMatrixMode(GL_MODELVIEW);
+    }
+    
+    private FloatBuffer convertToFB(float[] vertices){
+        ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4); 
+        vbb.order(ByteOrder.nativeOrder());    // use the device hardware's native byte order
+        FloatBuffer fb = vbb.asFloatBuffer();  // create a floating point buffer from the ByteBuffer
+        fb.put(vertices);    // add the coordinates to the FloatBuffer
+        fb.position(0);
+        return fb;
     }
     
     public void addModel(Model3D model, String textureFilepath){
@@ -147,12 +203,15 @@ public class RenderEngine {
         for(Poly3D face : faces){
             ArrayList<Integer> uvCoordIndicies = face.getUvCoordIndicies();
             ArrayList<Integer> vertexIndicies = face.getVertexIndicies();
+            ArrayList<Integer> vertexNormIndicies = face.getVertexNormIndicies();
 
             glBegin(GL_POLYGON);
             for(int j = 0; j < vertexIndicies.size(); j++){
                 Point2D uvCoord = model.getUvCoordAt(uvCoordIndicies.get(j));
                 Point3D vertex = model.getVertexAt(vertexIndicies.get(j));
+                Point3D vertexNorm = model.getVertNormAt(j);
 
+                glNormal3d(vertexNorm.getX(), vertexNorm.getY(), vertexNorm.getZ());
                 glTexCoord2d(uvCoord.getX(), uvCoord.getY());
                 glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
             }

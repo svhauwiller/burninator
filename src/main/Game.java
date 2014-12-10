@@ -51,18 +51,19 @@ public class Game {
     private void generateEnv() {
     	Model3D groundModel = new Model3D();
     	groundModel.loadDataFromFile(GROUND_MODEL_FILE);
+        groundModel.setModelZ(-200);
     	mainWindow.addModel(groundModel, PAVEMENT_TEXTURE_FILE);
     	listOfOthers.add(groundModel);
     	
-    	for(int i = 1; i < numOfBuildings + 1; i++)
+    	for(int i = 0; i < numOfBuildings + 1; i++)
     	{
-    		for(int j = 1; j < numOfBuildings + 1; j++)
+    		for(int j = 0; j < numOfBuildings + 1; j++)
     		{
 		    	Model3D buildingModel = new Model3D();
 		    	buildingModel.loadDataFromFile(BUILDING_MODEL_FILE);
-		    	buildingModel.setModelX(20*i);
+		    	buildingModel.setModelX(50*i);
 		    	buildingModel.setModelY(25); // 50 is the height of building1.obj
-		    	buildingModel.setModelZ(20*j);
+		    	buildingModel.setModelZ(-50*j - 100);
 		    	buildingModel.setModelScaleX(.5);
 		    	buildingModel.setModelScaleY(1);
 		    	buildingModel.setModelScaleZ(.5);
