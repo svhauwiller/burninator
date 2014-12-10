@@ -50,7 +50,7 @@ public class RenderEngine {
     private double cameraX = 0;
     private double cameraY = 3;
     private double cameraZ = 2;
-    private double rotAngleX = 0;
+    private double rotAngleX = 30;
     private double rotAngleY = 0;
     
     private ArrayList<Model3D> models;

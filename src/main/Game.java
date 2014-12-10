@@ -20,8 +20,8 @@ public class Game {
     private final int WINDOW_WIDTH = 1280;
     private final int WINDOW_HEIGHT = 720;
     
-    private final String PLAYER_MODEL_FILE = "car.obj";
-    private final String PLAYER_TEXTURE_FILE = "car_j.jpg";
+    private final String PLAYER_MODEL_FILE = "Royo2.obj";
+    private final String PLAYER_TEXTURE_FILE = "RoyoUV_vf.png";
     
     private final String GROUND_MODEL_FILE = "square.obj";
     private final String PAVEMENT_TEXTURE_FILE = "pavement.jpg";
