@@ -78,11 +78,13 @@ public class RenderEngine {
     
     private ArrayList<Model3D> models;
     private ArrayList<String> textureFilepaths;
+    private ArrayList<Integer> modelTextureIndicies;
     private ArrayList<Texture> textures;
     
     public RenderEngine(){
         models = new ArrayList<>();
         textureFilepaths = new ArrayList<>();
+        modelTextureIndicies = new ArrayList<>();
         textures = new ArrayList<>();
     }
     
@@ -91,9 +93,9 @@ public class RenderEngine {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f); 
 //        glEnable(GL_LIGHTING);
 //        glShadeModel(GL_SMOOTH);
-//        //glEnable(GL_LIGHT0);
+//        glEnable(GL_LIGHT0);
 //        
-//        float[] posVert = {50.0f,60.0f,50.0f,1.0f};
+//        float[] posVert = {50.0f,60.0f,-150.0f,1.0f};
 //        float[] ambColorVert = {1.0f, 1.0f, 1.0f, 1.0f};
 //        float[] difColorVert = {1.0f, 1.0f, 1.0f, 1.0f};
 //        float[] specColorVert = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -134,7 +136,12 @@ public class RenderEngine {
     
     public void addModel(Model3D model, String textureFilepath){
         models.add(model);
-        textureFilepaths.add(textureFilepath);
+        if(textureFilepaths.contains(textureFilepath)){
+            modelTextureIndicies.add(textureFilepaths.indexOf(textureFilepath));
+        } else {
+            textureFilepaths.add(textureFilepath);
+            modelTextureIndicies.add(textureFilepaths.size() - 1);
+        }
     }
     
     public Model3D getModelAt(int index){
@@ -152,6 +159,7 @@ public class RenderEngine {
             try {
                 texture = TextureLoader.getTexture(fileExt, new FileInputStream(filepath), true);
 
+                
                 System.out.println("Texture loaded: "+texture);
                 System.out.println(">> Image width: "+texture.getImageWidth());
                 System.out.println(">> Image height: "+texture.getImageWidth());
@@ -179,7 +187,7 @@ public class RenderEngine {
     
     private void bindTextures(int modelIndex){
         Color.white.bind();
-        Texture modelTexture = textures.get(modelIndex);
+        Texture modelTexture = textures.get(modelTextureIndicies.get(modelIndex));
         modelTexture.bind();
     }
     
@@ -211,9 +219,9 @@ public class RenderEngine {
                 Point3D vertex = model.getVertexAt(vertexIndicies.get(j));
                 Point3D vertexNorm = model.getVertNormAt(j);
 
-                glNormal3d(vertexNorm.getX(), vertexNorm.getY(), vertexNorm.getZ());
                 glTexCoord2d(uvCoord.getX(), uvCoord.getY());
                 glVertex3d(vertex.getX(), vertex.getY(), vertex.getZ());
+                glNormal3d(vertexNorm.getX(), vertexNorm.getY(), vertexNorm.getZ());
             }
             glEnd();
         }
