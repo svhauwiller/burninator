@@ -52,8 +52,10 @@ public class Game {
         
         Model3D flameModel = new Model3D();
         flameModel.loadDataFromFile(FLAME_MODEL_FILE);
+        flameModel.setModelScaleX(0.1);
+        flameModel.setModelScaleZ(0.3);
         flameModel.createCollider();
-        mainWindow.addModel(playerModel, FLAME_TEXTURE_FILE);
+        mainWindow.addModel(flameModel, FLAME_TEXTURE_FILE);
         
         mainWindow.initPlayerController(playerModel);
     }
