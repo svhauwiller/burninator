@@ -86,8 +86,9 @@ public class RenderEngine {
     public void loadTextures(){
         for(String filepath : textureFilepaths){
             Texture texture;
+            String fileExt = filepath.split("[.]")[1].toUpperCase();
             try {
-                texture = TextureLoader.getTexture("JPG", new FileInputStream(filepath), true);
+                texture = TextureLoader.getTexture(fileExt, new FileInputStream(filepath), true);
 
                 System.out.println("Texture loaded: "+texture);
                 System.out.println(">> Image width: "+texture.getImageWidth());

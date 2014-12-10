@@ -7,8 +7,6 @@
 package physics;
 
 import geo.Model3D;
-import geo.Point3D;
-import java.util.ArrayList;
 import static math.LinearAlgebra.matrixMult;
 import static math.LinearAlgebra.matrixVectMult;
 import static math.LinearAlgebra.rotXAxisMat;
@@ -59,27 +57,6 @@ public class Collider {
                        Math.abs(transformedPt[2] - offsetZ) < depth/2){
                         return true;
                     }
-                    
-//                    if(Math.abs(transformedPt[0] - offsetX) < width/2){
-//                        System.out.println("X");
-//                        System.out.println(transformedPt[0] - offsetX);
-//                        System.out.println(width/2);
-//                    }
-//                    
-//                    if(Math.abs(transformedPt[1] - offsetY) < height/2){
-//                        System.out.println("Y");
-//                        System.out.println(transformedPt[1] - offsetY);
-//                        System.out.println(height/2);
-//                    }
-//                    
-//                    if(Math.abs(transformedPt[2] - offsetZ) < depth/2){
-//                        System.out.println("Z");
-//                        System.out.println(transformedPt[2] - offsetZ);
-//                        System.out.println(depth/2);
-//                    }
-//                    
-//                    }
-                    
                 }
             }
         }
@@ -88,7 +65,7 @@ public class Collider {
     }
     
     private double[][] generateTransformMat(Model3D testParent){
-        //[NegativeHomeScale]*[NegativeHomeRotateY]*[NegativeHomeRotateX]*[NegativeHomeTranslate]*[TestTranslate]*[TestRotateX]*[TestRotateY]*[TestScale]
+        //[-HomeS]*[-HomeRY]*[-HomeRX]*[-HomeT]*[TestT]*[TestRX]*[TestRY]*[TestS]
         //Scale by test
         double[][] twoTransformMat = matrixMult(rotXAxisMat(testParent.getModelRotY()), scaleMat(testParent.getModelScaleX(), testParent.getModelScaleY(), testParent.getModelScaleZ()), 4);
         //Rotate by test
@@ -131,8 +108,5 @@ public class Collider {
     public double getOffsetZ() {
         return offsetZ;
     }
-    
-    
-    
     
 }

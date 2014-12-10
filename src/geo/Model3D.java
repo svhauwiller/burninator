@@ -173,9 +173,6 @@ public class Model3D {
         double offsetX = (maxX + minX)/2;
         double offsetY = (maxY + minY)/2;
         double offsetZ = (maxZ + minZ)/2;
-        System.out.println("X: " + maxX + ", " + minX + " W: " + width + " O: " + offsetX);
-        System.out.println("Y: " + maxY + ", " + minY + " W: " + height + " O: " + offsetY);
-        System.out.println("Z: " + maxZ + ", " + minZ + " W: " + depth + " O: " + offsetZ);
         createCollider(width, height, depth, offsetX, offsetY, offsetZ);
     }
     

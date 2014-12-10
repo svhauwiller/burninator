@@ -88,24 +88,27 @@ public class Controller {
         double oldModelY = character.getModelY();
         double oldModelZ = character.getModelZ();
         
-        character.setModelX(oldModelX - Math.sin(Math.toRadians(character.getModelRotY())) * 0.05);
-        character.setModelY(oldModelY + Math.sin(Math.toRadians(character.getModelRotX())) * 0.05);
-        character.setModelZ(oldModelZ - Math.cos(Math.toRadians(character.getModelRotY())) * 0.05);
+        double playerRotX = Math.toRadians(character.getModelRotX());
+        double playerRotY = Math.toRadians(character.getModelRotY());
+        
+        character.setModelX(oldModelX - Math.sin(playerRotY) * 0.2 * Math.cos(playerRotX));
+        character.setModelY(oldModelY + Math.sin(playerRotX) * 0.2);
+        character.setModelZ(oldModelZ - Math.cos(playerRotY) * 0.2 * Math.cos(playerRotX));
 
-        renderer.setCameraX(character.getModelX() + (4 * Math.sin(Math.toRadians(character.getModelRotY()))));
-        renderer.setCameraZ(character.getModelZ() + (4 * Math.cos(Math.toRadians(character.getModelRotY()))));
+        renderer.setCameraX(character.getModelX() + (4 * Math.sin(playerRotY)));
+        renderer.setCameraZ(character.getModelZ() + (4 * Math.cos(playerRotY)));
         
         double oldCamX = renderer.getCameraX();
         double oldCamY = renderer.getCameraY();
         double oldCamZ = renderer.getCameraZ();
         
-        renderer.setCameraY(character.getModelY() - (4 * Math.sin(Math.toRadians(character.getModelRotX()))));
+        renderer.setCameraY(character.getModelY() - (4 * Math.sin(playerRotX)));
         
-        double distance = 4 * Math.cos(Math.toRadians(character.getModelRotX()));
+        double distance = 4 * Math.cos(playerRotX);
         double delta = 4 - distance;
         
-        renderer.setCameraZ(oldCamZ - (delta * Math.cos(Math.toRadians(character.getModelRotY()))));
-        renderer.setCameraX(oldCamX - (delta * Math.sin(Math.toRadians(character.getModelRotY()))));
+        renderer.setCameraZ(oldCamZ - (delta * Math.cos(playerRotY)));
+        renderer.setCameraX(oldCamX - (delta * Math.sin(playerRotY)));
         
     }
 }
