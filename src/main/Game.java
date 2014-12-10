@@ -61,7 +61,7 @@ public class Game {
 		    	Model3D buildingModel = new Model3D();
 		    	buildingModel.loadDataFromFile(BUILDING_MODEL_FILE);
 		    	buildingModel.setModelX(20*i);
-		    	buildingModel.setModelY(0); // 50 is the height of building1.obj
+		    	buildingModel.setModelY(25); // 50 is the height of building1.obj
 		    	buildingModel.setModelZ(20*j);
 		    	buildingModel.setModelScaleX(.5);
 		    	buildingModel.setModelScaleY(1);

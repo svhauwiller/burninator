@@ -53,8 +53,6 @@ public class RenderEngine {
     private double rotAngleX = 0;
     private double rotAngleY = 0;
     
-    private int numCol = 0;
-    
     private ArrayList<Model3D> models;
     private ArrayList<String> textureFilepaths;
     private ArrayList<Texture> textures;
@@ -83,6 +81,14 @@ public class RenderEngine {
         textureFilepaths.add(textureFilepath);
     }
     
+    public Model3D getModelAt(int index){
+        return models.get(index);
+    }
+    
+    public int numOfModels(){
+        return models.size();
+    }
+    
     public void loadTextures(){
         for(String filepath : textureFilepaths){
             Texture texture;
@@ -107,22 +113,6 @@ public class RenderEngine {
     
     public void run(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        checkCollisions();
-        redrawAll();
-        
-    }
-    
-    private void checkCollisions(){
-        Model3D player = models.get(0);
-        for(int i = 1; i < models.size(); i++){
-            if(models.get(i).hasCollision(player)){
-                System.out.println("COLLIDE " + i);
-                numCol++;
-            }
-        }
-    }
-    
-    private void redrawAll(){
         for(int i = 0; i < models.size(); i++){
             Model3D model = models.get(i);
             bindTextures(i);

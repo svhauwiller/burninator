@@ -45,11 +45,25 @@ public class Window {
         input = new Controller(playerModel, this.renderer);
     }
     
+    private boolean checkCollisions(){
+        Model3D player = renderer.getModelAt(0);
+        for(int i = 1; i < renderer.numOfModels(); i++){
+            if(renderer.getModelAt(i).hasCollision(player)){
+                System.out.println("COLLIDE " + i);
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public void display(){
         renderer.loadTextures();
         
         while(!Display.isCloseRequested()){
             input.update();
+            if(checkCollisions()){
+                input.recoilPlayer();
+            }
             renderer.run();
             
             Display.update();
