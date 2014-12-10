@@ -47,7 +47,7 @@ public class Window {
     
     private boolean checkCollisions(){
         Model3D player = renderer.getModelAt(0);
-        for(int i = 1; i < renderer.numOfModels(); i++){
+        for(int i = 2; i < renderer.numOfModels(); i++){
             if(renderer.getModelAt(i).hasCollision(player)){
                 System.out.println("COLLIDE " + i);
                 return true;

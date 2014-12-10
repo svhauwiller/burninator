@@ -72,9 +72,9 @@ public class Controller {
         double playerRotX = Math.toRadians(character.getModelRotX());
         double playerRotY = Math.toRadians(character.getModelRotY());
         
-        character.setModelX(oldModelX - Math.sin(playerRotY) * 0.5 * Math.cos(playerRotX));
-        character.setModelY(oldModelY + Math.sin(playerRotX) * 0.5);
-        character.setModelZ(oldModelZ - Math.cos(playerRotY) * 0.5 * Math.cos(playerRotX));
+        character.setModelX(oldModelX - Math.sin(playerRotY) * 1 * Math.cos(playerRotX));
+        character.setModelY(oldModelY + Math.sin(playerRotX) * 1);
+        character.setModelZ(oldModelZ - Math.cos(playerRotY) * 1 * Math.cos(playerRotX));
 
         renderer.setCameraX(character.getModelX() + (9 * Math.sin(playerRotY)));
         renderer.setCameraZ(character.getModelZ() + (9 * Math.cos(playerRotY)));
@@ -101,9 +101,9 @@ public class Controller {
         double playerRotX = Math.toRadians(character.getModelRotX());
         double playerRotY = Math.toRadians(character.getModelRotY());
         
-        character.setModelX(oldModelX + Math.sin(playerRotY) * 0.5 * Math.cos(playerRotX));
-        character.setModelY(oldModelY - Math.sin(playerRotX) * 0.5);
-        character.setModelZ(oldModelZ + Math.cos(playerRotY) * 0.5 * Math.cos(playerRotX));
+        character.setModelX(oldModelX + Math.sin(playerRotY) * 1 * Math.cos(playerRotX));
+        character.setModelY(oldModelY - Math.sin(playerRotX) * 1);
+        character.setModelZ(oldModelZ + Math.cos(playerRotY) * 1 * Math.cos(playerRotX));
 
         renderer.setCameraX(character.getModelX() + (9 * Math.sin(playerRotY)));
         renderer.setCameraZ(character.getModelZ() + (9 * Math.cos(playerRotY)));
