@@ -28,7 +28,7 @@ public class Game {
     //private final String PLAYER_TEXTURE_FILE = "falcon01_simpletexture02.jpg";
     
     private final String GROUND_MODEL_FILE = "square.obj";
-    private final String PAVEMENT_TEXTURE_FILE = "pavement.jpg";
+    private final String PAVEMENT_TEXTURE_FILE = "pavement04.jpg";
     
     private final String BUILDING_MODEL_FILE = "building1.obj";
     private final String BUILDING_TEXTURE_FILE = "mirror_building.jpg";
