@@ -76,6 +76,8 @@ public class RenderEngine {
     private double rotAngleX = 30;
     private double rotAngleY = 0;
     
+    private boolean flameDisplay = false;
+    
     private ArrayList<Model3D> models;
     private ArrayList<String> textureFilepaths;
     private ArrayList<Integer> modelTextureIndicies;
@@ -178,6 +180,9 @@ public class RenderEngine {
     public void run(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         for(int i = 0; i < models.size(); i++){
+            if(i == 1 && flameDisplay == false){
+                continue;
+            }
             Model3D model = models.get(i);
             bindTextures(i);
             applyTransformations(model);
@@ -199,11 +204,11 @@ public class RenderEngine {
         glTranslated(-1*cameraX, -1*cameraY, -1*cameraZ);
 
         //APPLY LOCAL TRANSFORMATIONS
-        glTranslated(model.getModelX(), model.getModelY(), model.getModelZ());
-        glRotated(model.getModelRotY(), 0.0, 1.0, 0.0);
-        glRotated(model.getModelRotX(), 1.0, 0.0, 0.0);
-        glRotated(model.getModelRotZ(), 0.0, 0.0, 1.0);
-        glScaled(model.getModelScaleX(), model.getModelScaleY(), model.getModelScaleZ());
+            glTranslated(model.getModelX(), model.getModelY(), model.getModelZ());
+            glRotated(model.getModelRotY(), 0.0, 1.0, 0.0);
+            glRotated(model.getModelRotX(), 1.0, 0.0, 0.0);
+            glRotated(model.getModelRotZ(), 0.0, 0.0, 1.0);
+            glScaled(model.getModelScaleX(), model.getModelScaleY(), model.getModelScaleZ());
     }
    
     private void drawPolygons(Model3D model){
@@ -266,5 +271,9 @@ public class RenderEngine {
 
     public void setRotAngleY(double rotAngleY) {
         this.rotAngleY = rotAngleY;
+    }
+
+    public void setFlameDisplay(boolean flameDisplay) {
+        this.flameDisplay = flameDisplay;
     }
 }

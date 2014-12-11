@@ -18,10 +18,12 @@ import org.lwjgl.input.Keyboard;
  */
 public class Controller {
     private Model3D character;
+    private Model3D flame;
     private RenderEngine renderer;
     
-    public Controller(Model3D character, RenderEngine renderer) throws LWJGLException{
+    public Controller(Model3D character, Model3D flame, RenderEngine renderer) throws LWJGLException{
         this.character = character;
+        this.flame = flame;
         this.renderer = renderer;
         
         Keyboard.create();
@@ -34,6 +36,7 @@ public class Controller {
             double newRotX = character.getModelRotX() - 1.0;
             newRotX %= 360;
             character.setModelRotX(newRotX);
+            flame.setModelRotX(newRotX);
             renderer.setRotAngleX((-1*newRotX) + 30);
         }
         
@@ -42,6 +45,7 @@ public class Controller {
             double newRotX = character.getModelRotX() + 1.0;
             newRotX %= 360;
             character.setModelRotX(newRotX);
+            flame.setModelRotX(newRotX);
             renderer.setRotAngleX((-1*newRotX) + 30);
         }
         
@@ -50,6 +54,7 @@ public class Controller {
             double newRotY = character.getModelRotY() + 1.0;
             newRotY %= 360;
             character.setModelRotY(newRotY);
+            flame.setModelRotY(newRotY);
             renderer.setRotAngleY(-1*newRotY);
         }
         
@@ -58,7 +63,15 @@ public class Controller {
             double newRotY = character.getModelRotY() - 1.0;
             newRotY %= 360;
             character.setModelRotY(newRotY);
+            flame.setModelRotY(newRotY);
             renderer.setRotAngleY(-1*newRotY);
+        }
+        
+        //FLAMETHROWER
+        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
+            renderer.setFlameDisplay(true);
+        } else {
+            renderer.setFlameDisplay(false);
         }
         
         movePlayerForward();
@@ -76,20 +89,26 @@ public class Controller {
         character.setModelY(oldModelY + Math.sin(playerRotX) * 1);
         character.setModelZ(oldModelZ - Math.cos(playerRotY) * 1 * Math.cos(playerRotX));
 
+        flame.setModelX(character.getModelX() - (36 * Math.sin(playerRotY)));
+        flame.setModelZ(character.getModelZ() - (36 * Math.cos(playerRotY)));
         renderer.setCameraX(character.getModelX() + (9 * Math.sin(playerRotY)));
         renderer.setCameraZ(character.getModelZ() + (9 * Math.cos(playerRotY)));
         
+        double oldFlameX = flame.getModelX();
+        double oldFlameZ = flame.getModelZ();
         double oldCamX = renderer.getCameraX();
-        double oldCamY = renderer.getCameraY();
         double oldCamZ = renderer.getCameraZ();
         
+        flame.setModelY(character.getModelY() + (36 * Math.sin(playerRotX)));
         renderer.setCameraY(character.getModelY() - (9 * Math.sin(playerRotX - (Math.PI/6))));
         
-        double distance = 9 * Math.cos(playerRotX - (Math.PI/6));
-        double delta = 9 - distance;
+        double flameDelta = 36 - (36 * Math.cos(playerRotX));
+        double camDelta = 9 - (9 * Math.cos(playerRotX - (Math.PI/6)));
         
-        renderer.setCameraZ(oldCamZ - (delta * Math.cos(playerRotY)));
-        renderer.setCameraX(oldCamX - (delta * Math.sin(playerRotY)));
+        flame.setModelZ(oldFlameZ + (flameDelta * Math.cos(playerRotY)));
+        flame.setModelX(oldFlameX + (flameDelta * Math.sin(playerRotY)));
+        renderer.setCameraZ(oldCamZ - (camDelta * Math.cos(playerRotY)));
+        renderer.setCameraX(oldCamX - (camDelta * Math.sin(playerRotY)));
         
     }
 
@@ -105,19 +124,25 @@ public class Controller {
         character.setModelY(oldModelY - Math.sin(playerRotX) * 1);
         character.setModelZ(oldModelZ + Math.cos(playerRotY) * 1 * Math.cos(playerRotX));
 
+        flame.setModelX(character.getModelX() - (36 * Math.sin(playerRotY)));
+        flame.setModelZ(character.getModelZ() - (36 * Math.cos(playerRotY)));
         renderer.setCameraX(character.getModelX() + (9 * Math.sin(playerRotY)));
         renderer.setCameraZ(character.getModelZ() + (9 * Math.cos(playerRotY)));
         
+        double oldFlameX = flame.getModelX();
+        double oldFlameZ = flame.getModelZ();
         double oldCamX = renderer.getCameraX();
-        double oldCamY = renderer.getCameraY();
         double oldCamZ = renderer.getCameraZ();
         
+        flame.setModelY(character.getModelY() + (36 * Math.sin(playerRotX)));
         renderer.setCameraY(character.getModelY() - (9 * Math.sin(playerRotX - (Math.PI/6))));
         
-        double distance = 9 * Math.cos(playerRotX - (Math.PI/6));
-        double delta = 9 - distance;
+        double flameDelta = 36 - (36 * Math.cos(playerRotX));
+        double camDelta = 9 - (9 * Math.cos(playerRotX - (Math.PI/6)));
         
-        renderer.setCameraZ(oldCamZ - (delta * Math.cos(playerRotY)));
-        renderer.setCameraX(oldCamX - (delta * Math.sin(playerRotY)));
+        flame.setModelZ(oldFlameZ + (flameDelta * Math.cos(playerRotY)));
+        flame.setModelX(oldFlameX + (flameDelta * Math.sin(playerRotY)));
+        renderer.setCameraZ(oldCamZ - (camDelta * Math.cos(playerRotY)));
+        renderer.setCameraX(oldCamX - (camDelta * Math.sin(playerRotY)));
     }
 }

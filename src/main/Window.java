@@ -41,8 +41,8 @@ public class Window {
         renderer.addModel(model, textureFilepath);
     }
     
-    public void initPlayerController(Model3D playerModel) throws LWJGLException{
-        input = new Controller(playerModel, this.renderer);
+    public void initPlayerController(Model3D playerModel, Model3D flameModel) throws LWJGLException{
+        input = new Controller(playerModel, flameModel, this.renderer);
     }
     
     private boolean checkCollisions(){
