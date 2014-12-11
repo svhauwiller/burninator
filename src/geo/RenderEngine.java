@@ -77,6 +77,7 @@ public class RenderEngine {
     private double rotAngleY = 0;
     
     private boolean flameDisplay = false;
+    private int burningBuildingIndex = -1;
     
     private ArrayList<Model3D> models;
     private ArrayList<String> textureFilepaths;
@@ -152,6 +153,15 @@ public class RenderEngine {
     
     public int numOfModels(){
         return models.size();
+    }
+    
+    public void addBurningBuildingTexture(String textureFilepath){
+        textureFilepaths.add(textureFilepath);
+        burningBuildingIndex = textureFilepaths.size() - 1;
+    }
+    
+    public void burnBuilding(int buildingIndex){
+        modelTextureIndicies.set(buildingIndex, burningBuildingIndex);
     }
     
     public void loadTextures(){
@@ -271,6 +281,10 @@ public class RenderEngine {
 
     public void setRotAngleY(double rotAngleY) {
         this.rotAngleY = rotAngleY;
+    }
+    
+    public boolean getFlameDisplay() {
+        return this.flameDisplay;
     }
 
     public void setFlameDisplay(boolean flameDisplay) {

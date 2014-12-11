@@ -45,6 +45,10 @@ public class Window {
         input = new Controller(playerModel, flameModel, this.renderer);
     }
     
+    public void addBurnTexture(String textureFilepath){
+        renderer.addBurningBuildingTexture(textureFilepath);
+    }
+    
     private boolean checkCollisions(){
         Model3D player = renderer.getModelAt(0);
         for(int i = 2; i < renderer.numOfModels(); i++){
@@ -64,6 +68,13 @@ public class Window {
             if(checkCollisions()){
                 input.recoilPlayer();
             }
+            if(renderer.getFlameDisplay()){
+                int burningBuildingIndex = checkBurningBuilding();
+                if(burningBuildingIndex > 0){
+                    System.out.println("BURNINATE!");
+                    renderer.burnBuilding(burningBuildingIndex);
+                }   
+            }
             renderer.run();
             
             Display.update();
@@ -73,5 +84,15 @@ public class Window {
     
     public void destroy(){
         Display.destroy();
+    }
+
+    private int checkBurningBuilding() {
+        Model3D flame = renderer.getModelAt(1);
+        for(int i = 2; i < renderer.numOfModels(); i++){
+            if(renderer.getModelAt(i).hasCollision(flame)){
+                return i;
+            }
+        }
+        return -1;
     }
 }

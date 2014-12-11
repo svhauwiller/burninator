@@ -21,17 +21,18 @@ public class Game {
     private final int WINDOW_WIDTH = 1280;
     private final int WINDOW_HEIGHT = 720;
     
-    /*private final String PLAYER_MODEL_FILE = "Royo2.obj";
-    private final String PLAYER_TEXTURE_FILE = "RoyoUV_vf.png";*/
+    private final String PLAYER_MODEL_FILE = "Royo2.obj";
+    private final String PLAYER_TEXTURE_FILE = "RoyoUV_vf.png";
     
-    private final String PLAYER_MODEL_FILE = "falcon06_unrotated.obj";
-    private final String PLAYER_TEXTURE_FILE = "falcon01_simpletexture02.jpg";
+    //private final String PLAYER_MODEL_FILE = "falcon06_unrotated.obj";
+    //private final String PLAYER_TEXTURE_FILE = "falcon01_simpletexture02.jpg";
     
     private final String GROUND_MODEL_FILE = "square.obj";
     private final String PAVEMENT_TEXTURE_FILE = "pavement.jpg";
     
     private final String BUILDING_MODEL_FILE = "building1.obj";
     private final String BUILDING_TEXTURE_FILE = "mirror_building.jpg";
+    private final String BURNING_BUILDING_TEXTURE_FILE = "ParkingLot.bmp";
     
     private final String FLAME_MODEL_FILE = "square.obj";
     private final String FLAME_TEXTURE_FILE = "flame1.png";
@@ -62,6 +63,8 @@ public class Game {
     }
     
     private void generateEnv() {
+        mainWindow.addBurnTexture(BURNING_BUILDING_TEXTURE_FILE);
+        
     	Model3D groundModel = new Model3D();
     	groundModel.loadDataFromFile(GROUND_MODEL_FILE);
     	groundModel.setModelX(-50);
