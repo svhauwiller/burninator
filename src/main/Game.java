@@ -32,7 +32,7 @@ public class Game {
     
     private final String BUILDING_MODEL_FILE = "building1.obj";
     private final String BUILDING_TEXTURE_FILE = "mirror_building.jpg";
-    private final String BURNING_BUILDING_TEXTURE_FILE = "ParkingLot.bmp";
+    private final String BURNING_BUILDING_TEXTURE_FILE = "burned_building04.jpg";
     
     private final String FLAME_MODEL_FILE = "square.obj";
     private final String FLAME_TEXTURE_FILE = "flame1.png";
