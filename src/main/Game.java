@@ -21,11 +21,11 @@ public class Game {
     private final int WINDOW_WIDTH = 1280;
     private final int WINDOW_HEIGHT = 720;
     
-    private final String PLAYER_MODEL_FILE = "Royo2.obj";
-    private final String PLAYER_TEXTURE_FILE = "RoyoUV_vf.png";
+    private final String PLAYER1_MODEL_FILE = "Royo2.obj";
+    private final String PLAYER1_TEXTURE_FILE = "RoyoUV_vf.png";
     
-    //private final String PLAYER_MODEL_FILE = "falcon06_unrotated.obj";
-    //private final String PLAYER_TEXTURE_FILE = "falcon01_simpletexture02.jpg";
+    private final String PLAYER2_MODEL_FILE = "falcon06_unrotated.obj";
+    private final String PLAYER2_TEXTURE_FILE = "falcon01_simpletexture02.jpg";
     
     private final String GROUND_MODEL_FILE = "square.obj";
     private final String PAVEMENT_TEXTURE_FILE = "pavement.jpg";
@@ -46,20 +46,24 @@ public class Game {
     }
     
     public void initPlayer() throws LWJGLException{
-        Model3D playerModel = new Model3D();
-        playerModel.loadDataFromFile(PLAYER_MODEL_FILE);
-        playerModel.createCollider();
-        mainWindow.addModel(playerModel, PLAYER_TEXTURE_FILE);
+        Model3D player1Model = new Model3D();
+        player1Model.loadDataFromFile(PLAYER1_MODEL_FILE);
+        player1Model.createCollider();
+        mainWindow.addModel(player1Model, PLAYER1_TEXTURE_FILE);
+        
+        Model3D player2Model = new Model3D();
+        player2Model.loadDataFromFile(PLAYER2_MODEL_FILE);
+        player2Model.createCollider();
+        mainWindow.addPlayer2(player2Model, PLAYER2_TEXTURE_FILE);
         
         Model3D flameModel = new Model3D();
         flameModel.loadDataFromFile(FLAME_MODEL_FILE);
         flameModel.setModelScaleX(0.05);
         flameModel.setModelScaleZ(0.3);
         flameModel.createCollider();
-        flameModel.setParent(playerModel);
         mainWindow.addModel(flameModel, FLAME_TEXTURE_FILE);
         
-        mainWindow.initPlayerController(playerModel, flameModel);
+        mainWindow.initPlayerController(player1Model, player2Model, flameModel);
     }
     
     private void generateEnv() {

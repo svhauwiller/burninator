@@ -19,11 +19,17 @@ import org.lwjgl.input.Keyboard;
 public class Controller {
     private Model3D character;
     private Model3D flame;
+    private Model3D player1Model;
+    private Model3D player2Model;
     private RenderEngine renderer;
-    
-    public Controller(Model3D character, Model3D flame, RenderEngine renderer) throws LWJGLException{
-        this.character = character;
+    private int currentPlayer = 1;
+    private boolean enterDown = false;
+   
+    public Controller(Model3D player1Model, Model3D player2Model, Model3D flame, RenderEngine renderer) throws LWJGLException{
+        this.character = player1Model;
         this.flame = flame;
+        this.player1Model = player1Model;
+        this.player2Model = player2Model;
         this.renderer = renderer;
         
         Keyboard.create();
@@ -72,6 +78,36 @@ public class Controller {
             renderer.setFlameDisplay(true);
         } else {
             renderer.setFlameDisplay(false);
+        }
+        
+        //SWAP CHARACTERS
+        if(Keyboard.isKeyDown(Keyboard.KEY_RETURN)){
+            if(!enterDown){
+                if(currentPlayer == 1){
+                    currentPlayer = 2;
+                    player2Model.setModelX(player1Model.getModelX());
+                    player2Model.setModelY(player1Model.getModelY());
+                    player2Model.setModelZ(player1Model.getModelZ());
+                    player2Model.setModelRotX(player1Model.getModelRotX());
+                    player2Model.setModelRotY(player1Model.getModelRotY());
+                    player2Model.setModelRotZ(player1Model.getModelRotZ());
+                    character = player2Model;
+                    renderer.setPlayer(2);
+                } else {
+                    currentPlayer = 1;
+                    player1Model.setModelX(player2Model.getModelX());
+                    player1Model.setModelY(player2Model.getModelY());
+                    player1Model.setModelZ(player2Model.getModelZ());
+                    player1Model.setModelRotX(player2Model.getModelRotX());
+                    player1Model.setModelRotY(player2Model.getModelRotY());
+                    player1Model.setModelRotZ(player2Model.getModelRotZ());
+                    character = player1Model;
+                    renderer.setPlayer(1);
+                }
+                enterDown = true;
+            }
+        } else {
+            enterDown = false;
         }
         
         movePlayerForward();

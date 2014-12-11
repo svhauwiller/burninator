@@ -41,8 +41,12 @@ public class Window {
         renderer.addModel(model, textureFilepath);
     }
     
-    public void initPlayerController(Model3D playerModel, Model3D flameModel) throws LWJGLException{
-        input = new Controller(playerModel, flameModel, this.renderer);
+    public void addPlayer2(Model3D model, String textureFilepath){
+        renderer.addPlayer2(model, textureFilepath);
+    }
+    
+    public void initPlayerController(Model3D player1Model, Model3D player2Model, Model3D flameModel) throws LWJGLException{
+        input = new Controller(player1Model, player2Model, flameModel, this.renderer);
     }
     
     public void addBurnTexture(String textureFilepath){

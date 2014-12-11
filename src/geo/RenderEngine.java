@@ -79,6 +79,11 @@ public class RenderEngine {
     private boolean flameDisplay = false;
     private int burningBuildingIndex = -1;
     
+    private Model3D player1;
+    private Model3D player2;
+    private int p1Texture;
+    private int p2Texture;
+    
     private ArrayList<Model3D> models;
     private ArrayList<String> textureFilepaths;
     private ArrayList<Integer> modelTextureIndicies;
@@ -165,6 +170,9 @@ public class RenderEngine {
     }
     
     public void loadTextures(){
+        player1 = models.get(0);
+        p1Texture = 0;
+        
         for(String filepath : textureFilepaths){
             Texture texture;
             String fileExt = filepath.split("[.]")[1].toUpperCase();
@@ -289,5 +297,22 @@ public class RenderEngine {
 
     public void setFlameDisplay(boolean flameDisplay) {
         this.flameDisplay = flameDisplay;
+    }
+
+    public void addPlayer2(Model3D model, String textureFilepath) {
+        player2 = model;
+        textureFilepaths.add(textureFilepath);
+        p2Texture = textureFilepaths.size() - 1;
+    }
+
+    public void setPlayer(int i) {
+        if(i == 2){
+            models.set(0, player2);
+            modelTextureIndicies.set(0, p2Texture);
+        } else {
+            models.set(0, player1);
+            modelTextureIndicies.set(0, p1Texture);
+        }
+        
     }
 }
